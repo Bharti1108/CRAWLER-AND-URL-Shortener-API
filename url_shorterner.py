@@ -5,7 +5,7 @@ from sqlalchemy.orm import DeclarativeBase , Session , sessionmaker
 from fastapi.responses import RedirectResponse
 import hashlib
 import string
-
+import random 
 engine = create_engine("sqlite:///./urls.db",connect_args={"check_same_thread":False})
 SessionLocal = sessionmaker(bind=engine)
 
@@ -34,7 +34,7 @@ def to_base62(number):
     return "".join(reversed(result))
 
 def make_code(url,length=7):
-    digest = hashlib.sha256(url.encode()).hexdigest()
+    digest = hashlib.sha256((url + str(random.random())).encode()).hexdigest()
     number = int(digest,16)
     return to_base62(number)[: length]
 
